@@ -159,7 +159,14 @@ routes.post('/login', (req, res, next) => {
 
 //success
 routes.get('/success', (req, res) => {
-    res.render('success')
+    res.render('success', { 'user': req.user })
 })
 
+//logout
+routes.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success_message', "Logout Successfully login to continue")
+    res.redirect('/login')
+
+})
 module.exports = routes
