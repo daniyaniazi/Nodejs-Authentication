@@ -1,6 +1,7 @@
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
+const cookieParser = require("cookie-parser")
 const dotenv = require('dotenv')
 //routes
 const authRoutes = require('./routes/auth')
@@ -15,6 +16,7 @@ mongoose.connect(process.env.DB_CONNECT, () => {
 
 //Middlewares
 app.use(express.json())
+app.use(cookieParser())
 
 //Middleware routes
 app.use('/api/user', authRoutes)

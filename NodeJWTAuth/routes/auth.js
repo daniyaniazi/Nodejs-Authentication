@@ -54,8 +54,21 @@ router.post('/login', async (req, res) => {
         return res.status(400).send("Invalid Password")
     }
     //Create and Assign a token
-    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET)
-    res.header('auth-token', token).send(token);
+    const maxAge = 3 * 24 * 60 * 60 //3 days
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET, { expiresIn: maxAge })
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.header('auth-token', token) //.send(token);
+    res.status(200).json({ user: user._id, token: token })
 })
 
+
+
+//Logout
+router.get('/logout', (req, res) => {
+
+    //remove token that expires very very quickly
+    res.cookie('jwt', '', { maxAge: 1 });
+    res.send("Logged Out")
+    res.redirect('/auth/user/login')
+})
 module.exports = router
