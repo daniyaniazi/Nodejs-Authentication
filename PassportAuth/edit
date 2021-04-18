@@ -1,0 +1,5 @@
+<!-- <%= user.username %>  <% user.messages.forEach(function(msg, index){ %>
+                        <h4>
+                            <%= msg %>
+                        </h4>
+                        <% }) %> -->
