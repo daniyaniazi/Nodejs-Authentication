@@ -6,6 +6,8 @@ const passport = require('passport')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const dotenv = require('dotenv')
+const flash = require('connect-flash')
+
 
 //Conect to db
 dotenv.config()
@@ -25,10 +27,19 @@ routes.use(session({
     saveUninitialized: false,
 }))
 
-
 //set passport
 routes.use(passport.initialize())
 routes.use(passport.session())
+
+//Connect Flash after cookie and session
+routes.use(flash());
+routes.use(function (req, res, next) {
+    res.locals.success_message = req.flash('success_message')
+    res.locals.error_message = req.flash('error_message')
+    res.locals.error = req.flash('error')
+    next()
+
+})
 
 //ROUTES
 //GET index signup page
@@ -73,6 +84,8 @@ routes.post('/register', (req, res) => {
                         }).save((err, data) => {
                             if (err) throw err;
 
+                            req.flash('success_message', "Registered Successfully login to continue")
+
                             res.redirect('/login')
                         })
                     })
@@ -94,21 +107,21 @@ passport.use(new localStrategy({
 
         //no user exist
         if (!data) {
-            console.log("no data", data)
-            return done(null, false);
+            //default error message
+            return done(null, false, { message: "User Doesn't Exist" })
         }
 
         //comapre password
         bcrypt.compare(password, data.password, (err, match) => {
 
             if (err) {
-                console.log("comapre err", err)
-                return done(null, false)
+                // console.log("comapre err", err)
+                return done(null, false, { message: "Some Error Occured" })
             }
             if (!match) {
                 //password wrog
-                console.log("not match err", err)
-                return done(null, false)
+                // console.log("not match err", err)
+                return done(null, false, { message: "Email or Password did not Match" })
             }
             if (match) {
                 console.log("match", match)
@@ -139,6 +152,7 @@ routes.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         failureRedirect: '/login',
         successRedirect: '/success',
+        failureFlash: true,
     })(req, res, next);
 })
 

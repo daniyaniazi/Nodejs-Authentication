@@ -1,17 +1,48 @@
-<h1>
-    Login
-</h1>
+<!doctype html>
+<html lang="en">
 
-<form action="/login" method="POST">
-    <div>
-        <label for="email">Email</label>
-        <input type="text" id="email" name="email" required>
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <button type="submit">Login</button>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-</form>
-<p>Not a member ? <a href="/">Register</a> </p>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body class="container mt-5">
+    <h1>
+        Login
+    </h1>
+    <div class="container mt-5 p-5 card">
+        <% if (success_message !='' ) { %>
+            <div class="alert alert-success" role="alert">
+                <%= success_message%>
+            </div>
+            <% } %>
+
+                <% if( error !='' ){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+
+                    <% } %>
+                        <form action="/login" method="POST">
+                            <div>
+                                <label for="email">Email</label>
+                                <input type="text" id="email" name="email" required>
+                            </div>
+                            <div>
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Login</button>
+
+                        </form>
+                        <p>Not a member ? <a href="/">Register</a> </p>
+    </div>
+</body>
+
+</html>
