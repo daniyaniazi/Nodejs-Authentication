@@ -18,10 +18,15 @@
                 <%= user.username %>
             </a>. Enjoy
         </div>
-
-        <h3 class="p-2">If You See This Page <br> Then You Have Logged In Successfully ! </h3>
         <a class="btn btn-danger" href="/logout">Logout</a>
         <div class="container p-3">
+            <div class="p-3">
+                <% if (success_message !='' ) { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success_message%>
+                    </div>
+                    <% } %>
+            </div>
             <form action="/addmsg" method="POST">
                 <div class="form-group">
                     <textarea class="form-control" name="msg" id="msg" cols="30" rows="3" maxlength="200" placeholder="Enter Some Message.. 200 characters..."></textarea>
@@ -29,8 +34,27 @@
                 <div class="form-group">
                     <button class="btn btn-outline-success" type="submit">Add Message</button>
                 </div>
-                <div>
 
+
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                                <th scope="row">Your Messages</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% user.messages.forEach(function(msg, index){ %>
+                                <tr>
+                                    <td>
+                                        <%= msg %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+
+                        </tbody>
+                    </table>
                 </div>
             </form>
             <p>

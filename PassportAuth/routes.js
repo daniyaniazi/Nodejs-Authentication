@@ -41,6 +41,17 @@ routes.use(function (req, res, next) {
 
 })
 
+//Ensure Auth
+const ensureAuth = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, post-check=0, pre-check=0');
+        next();
+    } else {
+        req.flash('error_message', "Please Login to continue !");
+        res.redirect('/login');
+    }
+}
+
 //ROUTES
 //GET index signup page
 routes.get('/', (req, res) => {
@@ -158,7 +169,7 @@ routes.post('/login', (req, res, next) => {
 
 
 //success
-routes.get('/success', (req, res) => {
+routes.get('/success', ensureAuth, (req, res) => {
     res.render('success', { 'user': req.user })
 })
 
@@ -167,6 +178,26 @@ routes.get('/logout', (req, res) => {
     req.logout();
     req.flash('success_message', "Logout Successfully login to continue")
     res.redirect('/login')
+
+})
+
+//Post Messages
+routes.post('/addmsg', ensureAuth, (req, res) => {
+    User.findOneAndUpdate({
+        email: req.user.email
+    },
+        {
+            $push: {
+                messages: req.body['msg']
+            }
+        }, (err, success) => {
+            if (err) throw err;
+            if (success) {
+                console.log("Added ...")
+            }
+        });
+    req.flash('success_message', "Message Added Successfully")
+    res.redirect('/success')
 
 })
 module.exports = routes

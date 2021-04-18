@@ -10,38 +10,57 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <title>Login</title>
+    <style>
+        .form-div {
+            width: 50%;
+            margin: auto;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body class="container mt-5 text-center ">
     <h1 class="text-center text-dark">
         Login
     </h1>
-    <div class="container mt-5 p-5 card">
+    <div class="container mt-5 text-center">
         <% if (success_message !='' ) { %>
             <div class="alert alert-success" role="alert">
                 <%= success_message%>
             </div>
             <% } %>
-
-                <% if( error !='' ){ %>
+                <% if (error_message !='' ) { %>
                     <div class="alert alert-danger" role="alert">
-                        <%= error %>
+                        <%= error_message%>
                     </div>
-
                     <% } %>
-                        <form action="/login" method="POST">
-                            <div>
-                                <label for="email">Email</label>
-                                <input type="text" id="email" name="email" required>
-                            </div>
-                            <div>
-                                <label for="password">Password</label>
-                                <input type="password" id="password" name="password" required>
-                            </div>
-                            <button type="submit" class="btn btn-success">Login</button>
 
-                        </form>
-                        <p>Not a member ? <a href="/">Register</a> </p>
+                        <% if( error !='' ){ %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= error %>
+                            </div>
+
+                            <% } %>
+
+                                <div class="form-div card">
+                                    <div class="card-body">
+                                        <form action="/login" method="POST">
+                                            <div class='row justify-content-between m-1'>
+                                                <label for="email">Email</label>
+                                                <input type="text" id="email" name="email" required>
+                                            </div>
+                                            <div class='row justify-content-between m-1'>
+                                                <label for="password">Password</label>
+                                                <input type="password" id="password" name="password" required>
+                                            </div>
+                                            <button type="submit" class="btn mt-3 btn-success">Login</button>
+
+                                        </form>
+                                        <p class="mt-2">Not a member ? <a href="/">Register</a> </p>
+
+                                    </div>
+                                </div>
     </div>
 </body>
 
